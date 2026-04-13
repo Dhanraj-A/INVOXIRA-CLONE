@@ -5,7 +5,8 @@ function App() {
   const [backendStatus, setBackendStatus] = useState('Checking...')
 
   useEffect(() => {
-    fetch('/api/health')
+    const apiUrl = import.meta.env.VITE_API_URL || '';
+    fetch(`${apiUrl}/api/health`)
       .then(res => res.json())
       .then(data => setBackendStatus(data.status === 'ok' ? 'Online' : 'Error'))
       .catch(() => setBackendStatus('Offline'))

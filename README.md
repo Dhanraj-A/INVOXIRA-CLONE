@@ -6,7 +6,7 @@ This is a fresh, clean project setup for Invoxira that works perfectly on Vercel
 
 ```
 invoxira-v2-clean/
-├── frontend/          # React + Vite (https://invoxira-frontend.vercel.app)
+├── frontend/          # React + Vite (https://invoxira-v2-clean.vercel.app)
 ├── backend/           # Express API (https://invoxira-backend.onrender.com)
 └── .gitignore
 ```
@@ -26,7 +26,10 @@ npm run dev                    # Start both
 ### Deploy to Vercel
 1. Push to GitHub
 2. Connect to Vercel
-3. Automatically builds and deploys
+3. Ensure **Project Settings**:
+   - **Framework Preset**: Vite
+   - **Root Directory**: `frontend`
+   - **Output Directory**: `dist` (Important: Not public!)
 
 ## API Server
 - Runs on port 5000
@@ -38,5 +41,6 @@ npm run dev                    # Start both
 - Configure `MONGODB_URI` in `.env`
 
 ## Build Command
-- Vercel automatically runs: `cd frontend && npm ci --production=false && npm run build`
-- Output goes to `public/` folder
+- Vercel automatically runs: `npm run build`
+- Output goes to `dist/` folder
+

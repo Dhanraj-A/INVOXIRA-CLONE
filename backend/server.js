@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 5000
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://invoxira-frontend.vercel.app'
+    'https://invoxira-frontend.vercel.app',
+    'https://invoxira-v2-clean.vercel.app'
   ],
   credentials: true
 }))
@@ -19,7 +20,7 @@ app.use(express.json())
 
 // Basic Routes
 app.get('/api', (req, res) => {
-  res.json({ message: 'Invoxira API Server', status: 'running' })
+  res.json({ message: 'Backend is running' })
 })
 
 app.get('/api/health', (req, res) => {
