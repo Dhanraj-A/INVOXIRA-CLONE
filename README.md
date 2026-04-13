@@ -33,7 +33,7 @@ npm run dev                    # Start both
 
 ## API Server
 - Runs on port 5000
-- Base URL: `http://localhost:5000/api`
+- Base URL: `https://invoxira-backend.onrender.com/api`
 - Health check: `/api/health`
 
 ## Database
