@@ -11,8 +11,7 @@ const PORT = process.env.PORT || 5000
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://invoxira-frontend.vercel.app',
-    'https://invoxira-v2-clean.vercel.app'
+    /\.vercel\.app$/
   ],
   credentials: true
 }))
