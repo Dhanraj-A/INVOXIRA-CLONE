@@ -6,11 +6,8 @@ This is a fresh, clean project setup for Invoxira that works perfectly on Vercel
 
 ```
 invoxira-v2-clean/
-├── frontend/          # React + Vite
-├── backend/           # Express API
-├── public/            # Built frontend (auto-generated)
-├── package.json       # Root
-├── vercel.json        # Vercel config
+├── frontend/          # React + Vite (https://invoxira-frontend.vercel.app)
+├── backend/           # Express API (https://invoxira-backend.onrender.com)
 └── .gitignore
 ```
 
