@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "buildCommand": "cd frontend && npm ci --production=false && npm run build",
+  "outputDirectory": "public",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
