@@ -1,47 +1,40 @@
-import { useState, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Layout    from './components/Layout'
+import Login     from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Sale      from './pages/Sale'
+import { Purchase, Inventory, Parties, Expenses, Staff, Reports, Settings, PrintThemes, CreditDebitNote, FYClosing } from './pages/AllPages'
+import { migrateOldData } from './utils/fy'
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [backendStatus, setBackendStatus] = useState('Checking...')
+// Migrate old flat data to FY-based keys on first load
+migrateOldData()
 
-  useEffect(() => {
-    const apiUrl = import.meta.env.VITE_API_URL || '';
-    let attempt = 0;
-    const maxAttempts = 3;
-
-    const checkHealth = () => {
-      attempt++;
-      fetch(`${apiUrl}/api/health`, { signal: AbortSignal.timeout(15000) })
-        .then(res => res.json())
-        .then(data => {
-          setBackendStatus(data.status === 'ok' ? 'Online' : 'Error')
-        })
-        .catch(() => {
-          if (attempt < maxAttempts) {
-            setBackendStatus(`Waking up server... (attempt ${attempt}/${maxAttempts})`)
-            setTimeout(checkHealth, 5000)
-          } else {
-            setBackendStatus('Offline')
-          }
-        })
-    }
-
-    checkHealth()
-  }, [])
-
-  return (
-    <div className="container">
-      <h1>Invoxira</h1>
-      <p>Welcome to Invoxira - Invoice Management System</p>
-      <div className="status-badge">
-        Backend Status: <span className={`status ${backendStatus.toLowerCase().includes('online') ? 'online' : backendStatus.toLowerCase().includes('offline') ? 'offline' : 'checking'}`}>{backendStatus}</span>
-      </div>
-      <button onClick={() => setCount(count + 1)}>
-        Count: {count}
-      </button>
-    </div>
-  )
+function PrivateRoute({ children }) {
+  return localStorage.getItem('inv_token') ? children : <Navigate to="/login" replace />
 }
 
-export default App
-
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
+          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="sale"      element={<Sale />} />
+          <Route path="purchase"  element={<Purchase />} />
+          <Route path="inventory" element={<Inventory />} />
+          <Route path="parties"   element={<Parties />} />
+          <Route path="expenses"  element={<Expenses />} />
+          <Route path="staff"     element={<Staff />} />
+          <Route path="reports"   element={<Reports />} />
+          <Route path="print"     element={<PrintThemes />} />
+          <Route path="settings"  element={<Settings />} />
+          <Route path="fy-closing" element={<FYClosing />} />
+          <Route path="cdn"       element={<CreditDebitNote />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </BrowserRouter>
+  )
+}

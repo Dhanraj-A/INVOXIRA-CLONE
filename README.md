@@ -1,46 +1,58 @@
-# Invoxira v2 - Clean Build
+# Invoxira Cloud — Business Management Suite
 
-This is a fresh, clean project setup for Invoxira that works perfectly on Vercel.
+## 🚀 Quick Start (Run in 4 commands)
 
-## Project Structure
-
+### Terminal 1 — Backend
 ```
-invoxira-v2-clean/
-├── frontend/          # React + Vite (https://invoxira-v2-clean.vercel.app)
-├── backend/           # Express API (https://invoxira-backend.onrender.com)
-└── .gitignore
+cd backend
+npm install
+node seeder.js
+npm run dev
+```
+✅ Should show: `MongoDB Connected: localhost` and `Server running on http://localhost:5000`
+
+### Terminal 2 — Frontend
+```
+cd frontend
+npm install
+npm run dev
+```
+✅ Open browser: http://localhost:5173
+
+## 🔑 Login
+- Mobile: `9999999999`
+- Password: `admin123`
+
+## 📋 Requirements
+- Node.js (v18+)
+- MongoDB running locally (localhost:27017)
+
+## ▶️ Start MongoDB (if not running)
+```
+net start MongoDB
+```
+Or open Services → find MongoDB → Start
+
+## 📁 Project Structure
+```
+invoxira/
+├── backend/
+│   ├── .env              ← MongoDB connection
+│   ├── server.js         ← Express server
+│   ├── seeder.js         ← Load demo data
+│   ├── models/           ← MongoDB models
+│   ├── routes/           ← API routes
+│   └── middleware/       ← Auth middleware
+│
+└── frontend/
+    ├── src/
+    │   ├── pages/        ← All page components
+    │   ├── components/   ← Layout, Sidebar
+    │   ├── styles/       ← CSS
+    │   └── api.js        ← Backend connection
+    └── vite.config.js
 ```
 
-## Installation
-
-### Local Development
-```bash
-cd invoxira-v2-clean
-npm install                    # Install root dependencies
-cd frontend && npm install     # Install frontend
-cd ../backend && npm install   # Install backend
-cd ..
-npm run dev                    # Start both
-```
-
-### Deploy to Vercel
-1. Push to GitHub
-2. Connect to Vercel
-3. Ensure **Project Settings**:
-   - **Framework Preset**: Vite
-   - **Root Directory**: `frontend`
-   - **Output Directory**: `dist` (Important: Not public!)
-
-## API Server
-- Runs on port 5000
-- Base URL: `https://invoxira-backend.onrender.com/api`
-- Health check: `/api/health`
-
-## Database
-- MongoDB with Mongoose
-- Configure `MONGODB_URI` in `.env`
-
-## Build Command
-- Vercel automatically runs: `npm run build`
-- Output goes to `dist/` folder
-
+## 🗄️ View Data in MongoDB Compass
+Open Compass → Connect to: `mongodb://localhost:27017`
+→ Database: `invoxira`
