@@ -19,7 +19,7 @@ export default function Login() {
     setErr(''); setLoading(true)
     try {
       if (isRegister) {
-        if (!name) return setErr('Name is required')
+        if (!name) { setLoading(false); return setErr('Name is required') }
         const { data } = await authAPI.register({ name, mobile, password: pass })
         localStorage.setItem('inv_token', data.token)
         localStorage.setItem('inv_user', JSON.stringify(data.user))

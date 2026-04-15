@@ -22,10 +22,22 @@ app.use(express.json({ limit: '10mb' }))
 // DB Connection & Auto-Seed Middleware
 let isSeeded = false
 const initDB = async (req, res, next) => {
-  if (mongoose.connection.readyState !== 1) {
-    console.log('🔄 Connecting to MongoDB Atlas...')
-    await mongoose.connect(process.env.MONGO_URI)
-    console.log('✅ Connected.')
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      console.log('🔄 Connecting to MongoDB Atlas...')
+      if (!process.env.MONGO_URI) {
+        console.error('❌ MONGO_URI environment variable is not set!')
+        return res.status(503).json({ message: 'Database not configured. MONGO_URI is missing.' })
+      }
+      await mongoose.connect(process.env.MONGO_URI, {
+        serverSelectionTimeoutMS: 10000,
+        connectTimeoutMS: 10000
+      })
+      console.log('✅ Connected.')
+    }
+  } catch (dbErr) {
+    console.error('❌ MongoDB connection failed:', dbErr.message)
+    return res.status(503).json({ message: 'Cannot connect to database. Please check MongoDB Atlas IP whitelist and connection string.' })
   }
   
   if (!isSeeded) {
