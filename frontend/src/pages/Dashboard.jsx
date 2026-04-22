@@ -173,15 +173,7 @@ export default function Dashboard() {
     }
   }
 
-  if (loading) return (
-    <div className="page-wrap" style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'60vh'}}>
-      <div style={{textAlign:'center'}}>
-        <div style={{fontSize:40,marginBottom:12}}>⏳</div>
-        <div style={{fontSize:16,fontWeight:600,color:'#1565C0'}}>Loading Dashboard...</div>
-        <div style={{fontSize:12,color:'#9E9E9E',marginTop:4}}>Fetching data from server</div>
-      </div>
-    </div>
-  )
+
 
   return (
     <div className="page-wrap">
