@@ -671,6 +671,7 @@ export function Inventory() {
   const [showModal, setShowModal] = useState(false)
   const [editId, setEditId] = useState(null)
   const [form, setForm] = useState(emptyProd)
+  const ff = v => setForm(p => ({ ...p, ...v }))
   const [selected, setSelected] = useState([])
   const [msg, setMsg] = useState('')
   const [customCats, setCustomCats] = useState([])
@@ -1062,6 +1063,7 @@ export function Expenses() {
   const [showModal, setShowModal] = useState(false)
   const [editId, setEditId] = useState(null)
   const [form, setForm] = useState({ ...emptyExp, date: getDefaultDateForFY(activeFYE) })
+  const ff = v => setForm(p => ({ ...p, ...v }))
   const [allCats, setAllCats] = useState(ECATS)
   const [showNewCat, setShowNewCat] = useState(false)
   const [newCatInput, setNewCatInput] = useState('')
@@ -1903,12 +1905,16 @@ export function PrintThemes() {
   
   useEffect(() => {
     getSettings().then(res => {
-      if (res.data?.printTheme) setSelected(res.data.printTheme || 'classic')
+      if (res.data?.printTheme) {
+        setSelected(res.data.printTheme || 'classic')
+        localStorage.setItem('inv_print_theme', res.data.printTheme)
+      }
     })
   }, [])
 
   async function apply(id) { 
     setSelected(id)
+    localStorage.setItem('inv_print_theme', id)
     try { 
       await saveSettings({ printTheme: id })
       alert(`✅ Theme "${THEMES.find(t => t.id === id)?.name}" applied!`) 

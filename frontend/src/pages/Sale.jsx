@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { getActiveFY, getFYLabel, isFYClosed, getDefaultDateForFY, validateDateInFY, getFYRange } from '../utils/fy'
-import { getInvoices, getNextInvNo, createInvoice, updateInvoice, deleteInvoice, getProducts, createProduct, updateProduct, getCustomers, createCustomer } from '../api'
+import { getInvoices, getNextInvNo, createInvoice, updateInvoice, deleteInvoice, getProducts, createProduct, updateProduct, getCustomers, createCustomer, getSettings } from '../api'
 
 // ── NumInput — fixes 0→01 issue ────────────────────────────────
 function NumInput({ value, onChange, ...props }) {
@@ -78,7 +78,26 @@ export default function Sale() {
   const [search,     setSearch]     = useState('')
   const [selected,   setSelected]   = useState([])
   const [loading,    setLoading]    = useState(true)
-  const biz = JSON.parse(localStorage.getItem('inv_biz') || localStorage.getItem('bizcloud_biz_profile') || '{}')
+  const [biz, setBiz] = useState(() => JSON.parse(localStorage.getItem('inv_biz') || localStorage.getItem('bizcloud_biz_profile') || '{}'))
+
+  useEffect(() => {
+    const onBizUpdate = () => setBiz(JSON.parse(localStorage.getItem('inv_biz') || localStorage.getItem('bizcloud_biz_profile') || '{}'))
+    window.addEventListener('biz_updated', onBizUpdate)
+    // Also load settings from backend to sync biz profile and print theme
+    getSettings().then(res => {
+      if (res.data) {
+        if (res.data.businessName) {
+          const merged = { ...biz, ...res.data }
+          setBiz(merged)
+          localStorage.setItem('inv_biz', JSON.stringify(merged))
+        }
+        if (res.data.printTheme) {
+          localStorage.setItem('inv_print_theme', res.data.printTheme)
+        }
+      }
+    }).catch(() => {})
+    return () => window.removeEventListener('biz_updated', onBizUpdate)
+  }, [])
 
   useEffect(() => {
     loadInvoices()
